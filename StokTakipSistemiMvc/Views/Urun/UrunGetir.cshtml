@@ -21,7 +21,7 @@
     <br />
     @Html.TextBoxFor(x => x.satisfiyat, new { @class = "form-control" })
     <br />
-    @Html.TextBoxFor(x => x.kategori, new { @class = "form-control" })
+    @Html.DropDownListFor(x => x.tblkategori.id, (List<SelectListItem>)ViewBag.urunkategori, new { @class = "form-control" })
     <br />
     <button class="btn btn-warning">Güncelle</button>
 }

@@ -13,7 +13,7 @@ namespace StokTakipSistemiMvc.Controllers
 
         public ActionResult Index()
         {
-            var urunler = db.tblurunler.ToList();
+            var urunler = db.tblurunler.Where(x => x.durum == true).ToList();
             return View(urunler);
         }
 
@@ -42,15 +42,38 @@ namespace StokTakipSistemiMvc.Controllers
 
         public ActionResult UrunGetir(int id)
         {
+            List<SelectListItem> kat = (from x in db.tblkategori.ToList()
+                                        select new SelectListItem
+                                        {
+                                            Text = x.ad,
+                                            Value = x.id.ToString()
+                                        }).ToList();
+
             var ktg = db.tblurunler.Find(id);
+            ViewBag.urunkategori = kat;
             return View("UrunGetir", ktg);
         }
 
-        //!!
-        public ActionResult UrunSil(int id)
+        public ActionResult UrunGuncelle(tblurunler p)
         {
-            var sil = db.tblurunler.Find(id);
-            db.tblurunler.Remove(sil);
+            var urun = db.tblurunler.Find(p.id);
+            urun.marka = p.marka;
+            urun.satisfiyat = p.satisfiyat;
+            urun.stok = p.stok;
+            urun.alisfiyat = p.alisfiyat;
+            urun.ad = p.ad;
+
+            var ktg = db.tblkategori.Where(x => x.id == p.tblkategori.id).FirstOrDefault();
+            urun.kategori = ktg.id;
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult UrunSil(tblurunler p1)
+        {
+            var urunbul = db.tblurunler.Find(p1.id);
+            urunbul.durum = false;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
