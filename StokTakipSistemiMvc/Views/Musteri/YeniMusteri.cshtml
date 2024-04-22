@@ -10,10 +10,12 @@
     <br />
     <label>Müşteri Adı</label>
     @Html.TextBoxFor(x => x.ad, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.ad, "", new { @style = "color:red" })
     <br />
 
     <label>Soyad</label>
     @Html.TextBoxFor(x => x.soyad, new { @class = "form-control" })
+    @Html.ValidationMessageFor(x => x.soyad, "", new { @style = "color:green" })
     <br />
 
     <label>Şehir</label>

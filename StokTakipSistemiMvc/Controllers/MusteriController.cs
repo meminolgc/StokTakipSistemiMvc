@@ -15,6 +15,7 @@ namespace StokTakipSistemiMvc.Controllers
     {
         DbStokMvcEntities db = new DbStokMvcEntities();
 
+        [Authorize]
         public ActionResult Index(int sayfa = 1)
         {
             var musteriListe = db.tblkmusteri.Where(x => x.durum == true).ToList().ToPagedList(sayfa, 10);
@@ -30,6 +31,11 @@ namespace StokTakipSistemiMvc.Controllers
         [HttpPost]
         public ActionResult YeniMusteri(tblkmusteri p)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("YeniMusteri");
+            }
+            p.durum = true;
             db.tblkmusteri.Add(p);
             db.SaveChanges();
             return RedirectToAction("Index");
